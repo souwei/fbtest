@@ -218,15 +218,30 @@ class SignInTwitterBase extends Component {
     event.preventDefault();
   };
 
+  getIdToken() {
+    const { firebase } = this.props;
+    firebase.auth.currentUser().getIdToken(/* forceRefresh */ true).then(function(idToken) {
+      // Send token to your backend via HTTPS
+      console.log(idToken,'hello id token')
+      // ...
+    }).catch(function(error) {
+      // Handle error
+      console.log(error,'hey error!!')
+    });
+  };
+
   render() {
     const { error } = this.state;
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <button type="submit">Sign In with Twitter</button>
+      <div>
+         <form onSubmit={this.onSubmit}>
+          <button type="submit">Sign In with Twitter</button>
 
-        {error && <p>{error.message}</p>}
-      </form>
+          {error && <p>{error.message}</p>}
+        </form>
+        <button type="button" onClick={() => this.getIdToken()}>Whats my token? </button>
+      </div>
     );
   }
 }
